@@ -1,0 +1,21 @@
+#!/bin/sh
+# Purpose: prevents adding binary/temporary files into repository
+
+
+allgood=true
+for i in $(git diff-index --cached HEAD | cut -d "." -f 2)
+do
+#	echo $i
+	if test $i = "dll" || test $i = "tmp" || test $i = "temp"
+	then
+		allgood=false
+#		echo $allgood
+	fi
+done
+
+if test $allgood=false
+then 
+	echo 'no binary files allowed, exiting ...'
+	exit 1
+fi
+
